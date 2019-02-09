@@ -1,0 +1,27 @@
+2019-02-02T14:32:52.783641000 0.228398s notice: Recursively removing directory /Users/augustusrizza/javascript_projects/blog/rethinkdb_data/tmp
+2019-02-02T14:32:52.785401000 0.230162s notice: Initializing directory /Users/augustusrizza/javascript_projects/blog/rethinkdb_data
+2019-02-02T14:32:52.785513000 0.230269s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/augustusrizza/javascript_projects/blog/rethinkdb_data' did not already exist or is empty.)
+2019-02-02T14:32:52.785553000 0.230309s notice: Running rethinkdb 2.3.6 (CLANG 9.0.0 (clang-900.0.37))...
+2019-02-02T14:32:52.791975000 0.236732s notice: Running on Darwin 18.2.0 x86_64
+2019-02-02T14:32:52.792048000 0.236804s notice: Loading data from directory /Users/augustusrizza/javascript_projects/blog/rethinkdb_data
+2019-02-02T14:32:52.874582000 0.319338s info: Automatically using cache size of 4695 MB
+2019-02-02T14:32:52.876654000 0.321410s notice: Listening for intracluster connections on port 29015
+2019-02-02T14:32:52.878611000 0.323367s notice: Listening for client driver connections on port 28015
+2019-02-02T14:32:52.878797000 0.323553s notice: Listening for administrative HTTP connections on port 8080
+2019-02-02T14:32:52.878802000 0.323557s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2019-02-02T14:32:52.878809000 0.323564s notice: Listening on driver addresses: 127.0.0.1, ::1
+2019-02-02T14:32:52.878811000 0.323566s notice: Listening on http addresses: 127.0.0.1, ::1
+2019-02-02T14:32:52.878817000 0.323573s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2019-02-02T14:32:52.878824000 0.323579s notice: Server ready, "Augustuss_MacBook_Pro_local_wzh" 37552bf8-9ec7-49e6-a6df-fada42dcae21
+2019-02-02T14:33:53.661593000 61.105882s info: Table 085af572-71a1-4eb3-a274-bcb96a524d72: Starting a new Raft election for term 1.
+2019-02-02T14:33:53.661899000 61.106188s info: Table 085af572-71a1-4eb3-a274-bcb96a524d72: Added replica on this server.
+2019-02-02T14:33:53.669440000 61.113728s info: Table 085af572-71a1-4eb3-a274-bcb96a524d72: This server is Raft leader for term 1. Latest log index is 0.
+2019-02-02T15:45:30.820761000 4358.108977s info: Table 3a2c241b-c908-48ff-8629-abf7cccbd58f: Starting a new Raft election for term 1.
+2019-02-02T15:45:30.820957000 4358.109172s info: Table 3a2c241b-c908-48ff-8629-abf7cccbd58f: Added replica on this server.
+2019-02-02T15:45:30.827968000 4358.116183s info: Table 3a2c241b-c908-48ff-8629-abf7cccbd58f: This server is Raft leader for term 1. Latest log index is 0.
+2019-02-02T15:45:42.162678000 4369.450553s info: Table 59afdddf-3d6c-4520-bbd6-13c6cbd49975: Starting a new Raft election for term 1.
+2019-02-02T15:45:42.162877000 4369.450752s info: Table 59afdddf-3d6c-4520-bbd6-13c6cbd49975: Added replica on this server.
+2019-02-02T15:45:42.170442000 4369.458317s info: Table 59afdddf-3d6c-4520-bbd6-13c6cbd49975: This server is Raft leader for term 1. Latest log index is 0.
+2019-02-02T19:08:18.574264000 7597.918299s info: Table a7b3e4aa-bacc-46fc-9776-ebf83f80896b: Starting a new Raft election for term 1.
+2019-02-02T19:08:18.574464000 7597.918499s info: Table a7b3e4aa-bacc-46fc-9776-ebf83f80896b: Added replica on this server.
+2019-02-02T19:08:18.581966000 7597.926001s info: Table a7b3e4aa-bacc-46fc-9776-ebf83f80896b: This server is Raft leader for term 1. Latest log index is 0.
