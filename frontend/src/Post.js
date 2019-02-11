@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {Markdown} from 'react-showdown';
 import dateFormat from 'dateformat';
 import Comments from "./Comments";
+import "./App.css";
 
 class Post extends Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class Post extends Component {
                 <Markdown markup={this.state.posts.content}/>
               </div>
 
-              <hr class="uk-divider-icon"/>
+              <hr className="uk-divider-icon"/>
             </article>
             <Comments post={this.state.id}/>
           </div>
@@ -78,7 +79,7 @@ class Post extends Component {
               </p>
               <Markdown markup={this.state.posts.content}/>
 
-              <hr class="uk-divider-icon"/>
+              <hr className="uk-divider-icon"/>
             </article>
             <Comments post={this.state.id}/>
           </div>

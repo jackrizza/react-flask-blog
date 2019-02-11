@@ -5,26 +5,34 @@ class Signup extends Component {
     render() {
         return (
             <div className="uk-container">
-                <form className="uk-grid-large" uk-grid>
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon" uk-icon="icon: user"></span>
-                            <input class="uk-input" type="text" placeholder="username"/>
+                <div className="uk-card uk-card-default uk-card-body">
+                <h1>Sign Up</h1>
+                    <form>
+                        <div className="uk-margin">
+                            <div className="uk-inline">
+                                <span className="uk-form-icon" uk-icon="icon: user"></span>
+                                <input className="uk-input uk-form-width-large" type="text" placeholder="username"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon" uk-icon="icon: user"></span>
-                            <input class="uk-input" type="text" placeholder="email"/>
+                        <div className="uk-margin">
+                            <div className="uk-inline">
+                                <span className="uk-form-icon" uk-icon="icon: user"></span>
+                                <input className="uk-input uk-form-width-large" type="text" placeholder="email"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-                            <input class="uk-input" type="password" placeholder="password"/>
+                        <div className="uk-margin">
+                            <div className="uk-inline">
+                                <span className="uk-form-icon uk-form-icon" uk-icon="icon: lock"></span>
+                                <input className="uk-input uk-form-width-large" type="password" placeholder="password"/>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                        <div className="uk-margin">
+                            <div className="uk-inline">
+                                <input className="uk-button uk-button-primary uk-form-width-large" type="submit" value="sign up"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         )
     }

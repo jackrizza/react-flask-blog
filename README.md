@@ -12,7 +12,6 @@ r.db("blog").tableCreate("comments");
 r.db("blog").tableCreate("keys");
 r.db("blog").tableCreate("users");
 ```
-You should be up and running
 
 ## post data
 The majority of the post data will look something like this

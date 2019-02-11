@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import pushsub from "./pushsub";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import keys from "./lib/key"
 
@@ -6,12 +7,12 @@ class Navbar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            signed_in: false
+            userSignedIn: false
+
         }
         this.handleChange = this
             .handleChange
             .bind(this);
-
     }
     handleChange(event) {
         if (event.target.value.length > 0) {
@@ -57,6 +58,16 @@ class Navbar extends Component {
                 })
         });
     }
+    componentDidMount() {
+        pushsub.subscribe_to_localstorage("user-signed-in", (stls_return) => {
+            let newState = stls_return === "false"
+                ? false
+                : true
+            if (newState !== this.state.userSignedIn) {
+                this.setState({userSignedIn: newState})
+            }
+        })
+    }
     render() {
         return (
             <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
@@ -69,7 +80,11 @@ class Navbar extends Component {
                     <div className="uk-navbar-left">
 
                         <ul className="uk-navbar-nav">
-                            <li className="uk-active uk-text-middle" style={{lineHeight : "150%"}}>
+                            <li
+                                className="uk-active uk-text-middle"
+                                style={{
+                                lineHeight: "150%"
+                            }}>
                                 <Link
                                     to="/"
                                     style={{
@@ -107,12 +122,13 @@ class Navbar extends Component {
                         )}
 
                     <div className="uk-navbar-right">
-                        {!this.state.signed_in
+                        {!this.state.userSignedIn
                             ? (
                                 <ul className="uk-navbar-nav">
 
                                     <li className="uk-active">
                                         <a
+                                            href="#"
                                             style={{
                                             color: "rgba(255,255,255,0.8)"
                                         }}>Sign In</a>
@@ -163,14 +179,20 @@ class Navbar extends Component {
                                             <span
                                                 className="uk-margin-small-right uk-margin-small-right"
                                                 uk-icon="icon: user"></span>
-                                            [USERNAME]</a>
+                                            {localStorage.getItem("user-username")}</a>
                                         <div className="uk-navbar-dropdown">
                                             <ul className="uk-nav uk-navbar-dropdown-nav">
-                                                <li>
-                                                    <a href="#">
-                                                        <span className="uk-margin-small-right" uk-icon="icon: file-edit"></span>
-                                                        Create Post</a>
-                                                </li>
+                                                {localStorage.getItem("user-type") === "author"
+                                                    ? (
+                                                        <li>
+                                                            <a href="#">
+                                                                <span className="uk-margin-small-right" uk-icon="icon: file-edit"></span>
+                                                                Create Post</a>
+                                                        </li>
+                                                    )
+                                                    : (
+                                                        <span></span>
+                                                    )}
                                                 <li>
                                                     <a href="#">
                                                         <span className="uk-margin-small-right" uk-icon="icon: settings"></span>

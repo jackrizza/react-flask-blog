@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "storage-changed": "^3.0.0"
+  }
+}

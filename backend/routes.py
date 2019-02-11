@@ -1,8 +1,9 @@
 from flask import *
-sr: Blueprint = Blueprint("simple_page", __name__, template_folder='templates')
 from db import db
 from key import key
-
+from auth import auth
+sr: Blueprint = Blueprint("simple_page", __name__, template_folder='templates')
+auth = auth()
 db = db()
 
 @sr.route("/search/<match>", methods=['POST'])
@@ -42,3 +43,7 @@ def get_posts():
     else:
         return jsonify("{\"error\":\"wrong api token\"}")
 
+
+@sr.route("/test", methods=['POST'])
+def test() :
+    return auth.sign_in(request.json)
