@@ -178,8 +178,7 @@ class Navbar extends Component {
                                         }}>
                                             <span
                                                 className="uk-margin-small-right uk-margin-small-right"
-                                                uk-icon="icon: user"></span>
-                                            {localStorage.getItem("user-username")}</a>
+                                                uk-icon="icon: user"></span></a>
                                         <div className="uk-navbar-dropdown">
                                             <ul className="uk-nav uk-navbar-dropdown-nav">
                                                 {localStorage.getItem("user-type") === "author"
