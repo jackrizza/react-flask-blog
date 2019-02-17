@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import Main from './Main';
 import Post from './Post';
 import Signup from './Signup';
+import Signin from './Signin';
 import './assets/css/uikit.css';
 
 localStorage.setItem("user-signed-in", false);
@@ -27,6 +28,7 @@ class App extends Component {
             <Navbar/>
             <Route path="/" exact component={Main}/>
             <Route path="/signup" exact component={Signup}/>
+            <Route path="/signin" exact component={Signin}/>
             <Route path="/post/:id" component={Post}/>
           </div>
         </Router>

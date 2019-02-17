@@ -7,6 +7,7 @@ from auth import auth
 sr: Blueprint = Blueprint("simple_page", __name__, template_folder='templates')
 auth = auth()
 db = db()
+key = key()
 
 
 @sr.route("/search/<match>", methods=['POST'])
@@ -17,6 +18,7 @@ def search(match):
         return jsonify(post)
     else:
         return jsonify("{error : 'wrong api key'}")
+
 
 
 @sr.route("/comments/<post_id>", methods=['POST'])
@@ -46,11 +48,10 @@ def get_posts():
         posts = db.db_get_posts()
         return jsonify(posts)
     else:
-        return jsonify("{\"error\":\"wrong api token\"}")
-
+        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
 
 @sr.route("/checkemail/<email>", methods=['POST'])
-def emailCheck(email):
+def email_check(email):
     client_api_key = request.json['client_api_key']
     if key.check_key(client_api_key):
         email = db.check_email(email)
@@ -59,11 +60,11 @@ def emailCheck(email):
         else:
             return jsonify('{"type" : "sucsess"}')
     else:
-        return jsonify("{\"error\":\"wrong api token\"}")
+        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
 
 
 @sr.route("/checkusername/<username>", methods=['POST'])
-def usernamecheck(username):
+def username_check(username):
     client_api_key = request.json['client_api_key']
     if key.check_key(client_api_key):
         email = db.check_username(username)
@@ -72,13 +73,14 @@ def usernamecheck(username):
         else:
             return jsonify('{"type" : "sucsess"}')
     else:
-        return jsonify("{\"error\":\"wrong api token\"}")
+        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
 
 @sr.route("/signup", methods=['POST'])
-def signup():
+def sign_up():
     client_api_key = request.json['client_api_key']
     if key.check_key(client_api_key):
        new_user = db.create_user(request.json["new_user"])
+       print(request.json["new_user"])
        if new_user:
            return jsonify('{"type" : "sucsess"}')
 
@@ -86,7 +88,35 @@ def signup():
            return jsonify('{"type" : "error","response" : "there was a problem creating the user"}')
 
     else:
-        return jsonify("{\"error\":\"wrong api token\"}")
+        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
+
+
+@sr.route("/salt", methods=['POST'])
+def salt() :
+    client_api_key = request.json['client_api_key']
+    if key.check_key(client_api_key):
+        salt = db.get_salt(request.json["username"])
+        if len(salt) > 0:
+            return jsonify('{"type" : "sucsess", "salt" : "' + salt + '"}')
+
+        else:
+            return jsonify('{"type" : "error","response" : "no user with that username"}')
+
+    else:
+        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
+
+
+@sr.route("/signin", methods=['POST'])
+def sign_in() :
+    client_api_key = request.json['client_api_key']
+    if key.check_key(client_api_key):
+        user = request.json["user"]
+        auth_user = auth.sign_in(user)
+        print(auth_user)
+        return jsonify(auth_user)
+    else:
+        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
+
 
 
 @sr.route("/test", methods=['POST'])

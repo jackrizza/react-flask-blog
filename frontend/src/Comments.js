@@ -54,7 +54,6 @@ class Comments extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props)
         fetch(`http://localhost:5000/comments/${this.props.post}`, {
             headers: {
                 'Accept': 'application/json',

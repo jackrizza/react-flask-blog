@@ -1,4 +1,5 @@
 import keys from './lib/key';
+import env from './env'
 import React, {Component} from 'react';
 import {Markdown} from 'react-showdown';
 import dateFormat from 'dateformat';
@@ -21,7 +22,7 @@ class Post extends Component {
       .replace("/post/", "")
     this.setState({id: id})
 
-    fetch(`http://localhost:5000/post/${id}`, {
+    fetch(`${env.getCurrent().api}post/${id}`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

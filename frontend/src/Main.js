@@ -1,4 +1,5 @@
 import keys from './lib/key';
+import env from './env'
 import React, {Component} from 'react';
 
 import Card from './Card';
@@ -12,7 +13,7 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    fetch(`http://localhost:5000/posts`, {
+    fetch(`${env.getCurrent().api}posts`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

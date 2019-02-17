@@ -1,5 +1,6 @@
 from db import db
 import time
+import json
 
 db = db()
 
@@ -14,6 +15,7 @@ class auth:
 
     def sign_in(self, user_data) -> object:
         # Get user by username or email
+        print(user_data)
         final_return = ""
         user = db.get_user(user_data["username_or_email"])
         if len(user) == 1:
@@ -27,11 +29,11 @@ class auth:
                     # return token + general user info
                     final_return = str(db.get_user_general_info(user_data["username_or_email"])[0])
                 else:
-                    final_return = "there was an error updating token"
+                    final_return = '{"type" : "error","response" : "there was an error updating token"}'
             else:
-                final_return = "username, email or password was incorrect"
+                final_return = '{"type" : "error","response" : "username, email or password was incorrect"}'
         else:
-            final_return = "no user with username or password"
+            final_return = '{"type" : "error","response" : "no user with username or password"}'
 
         return final_return
 

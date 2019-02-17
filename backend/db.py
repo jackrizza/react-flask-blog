@@ -64,7 +64,7 @@ class db:
         new_time = str(int(time.time()))
         new_token = new_time + "" + new_secret
         db.__rethink.table("users").get(match).update({"token": new_token}).run(db.__conn)
-
+        # TODO: smarter return needed, confirm that token was updated then, return true or false
         return True
 
     def check_token_association(self, match) -> bool:
@@ -88,5 +88,13 @@ class db:
                                                     ).pluck('username', 'firstname', 'lastname', 'email', 'type',
                                                             'token').run(db.__conn)
         return db.__cursor_to_array(cursor)
+
+    def get_salt(self, match):
+        cursor = db.__rethink.table("users").filter(lambda doc:
+                                                    doc['username'].match(match)
+                                                    ).pluck('salt',).run(db.__conn)
+        data = db.__cursor_to_array(cursor)
+        return data[0]["salt"]
+
 
 

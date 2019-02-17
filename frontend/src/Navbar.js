@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import pushsub from "./pushsub";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import keys from "./lib/key"
+import env from './env'
 
 class Navbar extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ class Navbar extends Component {
                 .background = "transparent"
         }
 
-        fetch(`http://localhost:5000/search/${event.target.value}`, {
+        fetch(`${env.getCurrent().api}search/${event.target.value}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -127,36 +128,11 @@ class Navbar extends Component {
                                 <ul className="uk-navbar-nav">
 
                                     <li className="uk-active">
-                                        <a
-                                            href="#"
+                                    <Link
+                                            to="/signin"
                                             style={{
                                             color: "rgba(255,255,255,0.8)"
-                                        }}>Sign In</a>
-                                        <div className="uk-navbar-dropdown">
-                                            <ul className="uk-nav uk-navbar-dropdown-nav">
-                                                <form>
-                                                    <div className="uk-margin">
-                                                        <div className="uk-inline">
-                                                            <span className="uk-form-icon" uk-icon="icon: user"></span>
-                                                            <input className="uk-input" type="text"/>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="uk-margin">
-                                                        <div className="uk-inline">
-                                                            <span className="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-                                                            <input className="uk-input" type="text"/>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="uk-margin">
-                                                        <div className="uk-inline">
-                                                            <input className="uk-input" type="submit" value="Sign In"/>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </ul>
-                                        </div>
+                                        }}>Sign In</Link>
                                     </li>
                                     <li className="uk-button-primary">
                                         <Link
@@ -178,7 +154,8 @@ class Navbar extends Component {
                                         }}>
                                             <span
                                                 className="uk-margin-small-right uk-margin-small-right"
-                                                uk-icon="icon: user"></span></a>
+                                                uk-icon="icon: user"></span>
+                                        </a>
                                         <div className="uk-navbar-dropdown">
                                             <ul className="uk-nav uk-navbar-dropdown-nav">
                                                 {localStorage.getItem("user-type") === "author"
