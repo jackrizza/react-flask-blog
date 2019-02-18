@@ -7,9 +7,10 @@ import Post from './Post';
 import Signup from './Signup';
 import Signin from './Signin';
 import Analytics from './Analytics';
+import pushsub from './pushsub';
 import './assets/css/uikit.css';
 
-if(localStorage.getItem("user-signed-in") === null) {
+if (localStorage.getItem("user-signed-in") === null) {
   localStorage.setItem("user-signed-in", false);
 }
 
@@ -21,7 +22,7 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    this.setState({DOMloaded : true})
+    this.setState({DOMloaded: true})
   }
   render() {
     if (this.state.DOMloaded) {

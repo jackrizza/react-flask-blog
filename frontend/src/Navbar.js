@@ -14,6 +14,13 @@ class Navbar extends Component {
         this.handleChange = this
             .handleChange
             .bind(this);
+        this.signOut = this
+            .signOut
+            .bind(this)
+    }
+    signOut() {
+        localStorage.clear()
+        window.location = "/"
     }
     handleChange(event) {
         if (event.target.value.length > 0) {
@@ -64,7 +71,6 @@ class Navbar extends Component {
             let newState = stls_return === "false"
                 ? false
                 : true
-            console.log(newState)
             if (newState !== this.state.userSignedIn) {
                 this.setState({userSignedIn: newState})
             }
@@ -159,20 +165,20 @@ class Navbar extends Component {
                                         </a>
                                         <div className="uk-navbar-dropdown">
                                             <ul className="uk-nav uk-navbar-dropdown-nav">
-                                                {localStorage.getItem("user-type") === "author"
+                                                {localStorage.getItem("type") === "author"
                                                     ? (
-                                                        <div>
+                                                        <span>
                                                             <li>
                                                                 <a href="#">
                                                                     <span className="uk-margin-small-right" uk-icon="icon: file-edit"></span>
                                                                     Create Post</a>
                                                             </li>
                                                             <li>
-                                                                <a href="#">
-                                                                    <span className="uk-margin-small-right" uk-icon="icon: file-edit"></span>
-                                                                    Dashboard</a>
+                                                                <Link to="/dashboard/analytics">
+                                                                    <span className="uk-margin-small-right" uk-icon="icon: grid"></span>
+                                                                    Dashboard</Link>
                                                             </li>
-                                                        </div>
+                                                        </span>
                                                     )
                                                     : (
                                                         <span></span>
@@ -186,6 +192,7 @@ class Navbar extends Component {
                                                 <li>
                                                     <a
                                                         href="#"
+                                                        onClick={this.signOut}
                                                         style={{
                                                         color: "#f0506e"
                                                     }}>

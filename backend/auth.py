@@ -28,7 +28,7 @@ class auth:
                 if new_token:
                     # return token + general user info
                     user = db.get_user_general_info(user_data["username_or_email"])[0]
-                    final_return = '{"type" : "sucsess", "response" : {"email" : "' + user["email"] + '","token" : "' + user["token"] + '","username" : "' +user["username"] + '"}}'
+                    final_return = '{"type" : "sucsess", "response" : {"type" : "' + user["type"] + '","email" : "' + user["email"] + '","token" : "' + user["token"] + '","username" : "' +user["username"] + '"}}'
                 else:
                     final_return = '{"type" : "error","response" : "there was an error updating token"}'
             else:

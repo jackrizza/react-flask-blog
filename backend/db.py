@@ -94,7 +94,10 @@ class db:
                                                     doc['username'].match(match)
                                                     ).pluck('salt',).run(db.__conn)
         data = db.__cursor_to_array(cursor)
-        return data[0]["salt"]
+        if len(data) > 0 :
+            return data[0]["salt"]
+        else :
+            return []
 
 
 

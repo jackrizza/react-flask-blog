@@ -25,7 +25,7 @@ The majority of the post data will look something like this
 ```
 
 ## TODO
-- Create Sign In
-- Create Editor
+- check if token is valid
+- create a functional dashboard
 - Create add a comment
 - Create Profile page

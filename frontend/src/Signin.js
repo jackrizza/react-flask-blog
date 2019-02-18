@@ -48,7 +48,6 @@ class Signup extends Component {
             password = document
                 .getElementById("password")
                 .value;
-        console.log(password)
         // fetch salt for password
         fetch(`${env.getCurrent().api}salt`, {
             headers: {
@@ -95,6 +94,7 @@ class Signup extends Component {
                                     localStorage.setItem("token", res.response.token)
                                     localStorage.setItem("email", res.response.email)
                                     localStorage.setItem("username", res.response.username)
+                                    localStorage.setItem("type", res.response.type)
                                     localStorage.setItem("user-signed-in", "true")
                                     window.location = "/"
                                 }

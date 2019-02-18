@@ -3,7 +3,6 @@ let pushsub = {
         setInterval(() => {
             let old_version = ""
             if(old_version !== localStorage.getItem(ls_object)){
-                console.log(localStorage.getItem(ls_object))
                 old_version = localStorage.getItem(ls_object)
                 callback(localStorage.getItem(ls_object))
             }
