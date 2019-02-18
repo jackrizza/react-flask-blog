@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import SHA256 from 'crypto-js/sha256'
-import keys from "./lib/key"
-import env from './env'
+import keys from "./lib/key";
+import env from './env';
+import encrypt from './encrypt';
 
 class Signup extends Component {
 
@@ -22,7 +22,9 @@ class Signup extends Component {
         this.handleUsernameCheck = this
             .handleUsernameCheck
             .bind(this)
-        this.formChange = this.formChange.bind(this)
+        this.formChange = this
+            .formChange
+            .bind(this)
     }
 
     formPreventDefault(event) {
@@ -124,20 +126,6 @@ class Signup extends Component {
             emailInput.classList = "uk-input uk-form-width-large uk-form-danger"
         }
     }
-    encryptPassword(password) {
-        var current_date = (new Date())
-            .valueOf()
-            .toString();
-        var random = Math
-            .random()
-            .toString();
-        let hash = SHA256(current_date + random).toString()
-        return {
-            "salt": hash,
-            "password": SHA256(password).toString()
-        };
-    }
-
     isLUN(lun) {
         var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
         return re.test(lun)
@@ -197,8 +185,8 @@ class Signup extends Component {
                 .value,
             password = document
                 .getElementById("password")
-                .value;
-        password = this.encryptPassword(password)
+                .value,
+            ep = encrypt.create_new_set(password)
         fetch(`${env.getCurrent().api}signup`, {
             headers: {
                 'Accept': 'application/json',
@@ -210,8 +198,8 @@ class Signup extends Component {
                 "new_user": {
                     "username": username,
                     "email": email,
-                    "password": password.password,
-                    "salt": password.salt
+                    "password": ep.password,
+                    "salt": ep.salt
                 }
             })
         }).then(response => {

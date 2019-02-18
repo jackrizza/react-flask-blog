@@ -126,3 +126,7 @@ def test():
         return "Everthing is set"
     else:
         return "Not the right token"
+
+@sr.route("/")
+def index():
+    return "Hello World"

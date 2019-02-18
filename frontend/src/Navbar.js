@@ -64,6 +64,7 @@ class Navbar extends Component {
             let newState = stls_return === "false"
                 ? false
                 : true
+            console.log(newState)
             if (newState !== this.state.userSignedIn) {
                 this.setState({userSignedIn: newState})
             }
@@ -128,7 +129,7 @@ class Navbar extends Component {
                                 <ul className="uk-navbar-nav">
 
                                     <li className="uk-active">
-                                    <Link
+                                        <Link
                                             to="/signin"
                                             style={{
                                             color: "rgba(255,255,255,0.8)"
@@ -160,11 +161,18 @@ class Navbar extends Component {
                                             <ul className="uk-nav uk-navbar-dropdown-nav">
                                                 {localStorage.getItem("user-type") === "author"
                                                     ? (
-                                                        <li>
-                                                            <a href="#">
-                                                                <span className="uk-margin-small-right" uk-icon="icon: file-edit"></span>
-                                                                Create Post</a>
-                                                        </li>
+                                                        <div>
+                                                            <li>
+                                                                <a href="#">
+                                                                    <span className="uk-margin-small-right" uk-icon="icon: file-edit"></span>
+                                                                    Create Post</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">
+                                                                    <span className="uk-margin-small-right" uk-icon="icon: file-edit"></span>
+                                                                    Dashboard</a>
+                                                            </li>
+                                                        </div>
                                                     )
                                                     : (
                                                         <span></span>

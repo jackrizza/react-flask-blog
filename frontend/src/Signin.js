@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import SHA256 from 'crypto-js/sha256'
-import keys from "./lib/key"
-import env from "./env"
+import encrypt from './encrypt';
+import keys from "./lib/key";
+import env from "./env";
 
 class Signup extends Component {
     constructor(props) {
@@ -12,6 +12,9 @@ class Signup extends Component {
         this.formChange = this
             .formChange
             .bind(this)
+        this.state = {
+            alerts: null
+        }
     }
 
     formPreventDefault(event) {
@@ -38,10 +41,6 @@ class Signup extends Component {
         }
     }
 
-    encryptPassword(password, salt) {
-        return SHA256(password).toString()
-    }
-
     handleSignIn() {
         let username = document
                 .getElementById("username")
@@ -65,18 +64,41 @@ class Signup extends Component {
                     console.log(res)
                     res = JSON.parse(res)
                     // create salted password
-                    let saltedPassword = this.encryptPassword(res.salt, password)
+                    let saltedPassword = encrypt.reproduce_set(password, res.salt)
                     fetch(`${env.getCurrent().api}signin`, {
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
                         method: "POST",
-                        body: JSON.stringify({"client_api_key": keys.blog_post_api_key, user: {"username_or_email" : username, "password" : saltedPassword}})
-                    }).then(response => {
-                        response.json().then(res => {
-                            console.log(res)
+                        body: JSON.stringify({
+                            "client_api_key": keys.blog_post_api_key,
+                            user: {
+                                "username_or_email": username,
+                                "password": saltedPassword.password
+                            }
                         })
+                    }).then(response => {
+                        response
+                            .json()
+                            .then(res => {
+                                console.log(res)
+                                res = JSON.parse(res)
+                                console.log(res)
+                                if (res.type === "error") {
+                                    this.setState({
+                                        "alerts": {
+                                            "response": res.response
+                                        }
+                                    })
+                                } else if (res.type === "sucsess") {
+                                    localStorage.setItem("token", res.response.token)
+                                    localStorage.setItem("email", res.response.email)
+                                    localStorage.setItem("username", res.response.username)
+                                    localStorage.setItem("user-signed-in", "true")
+                                    window.location = "/"
+                                }
+                            })
                     })
                 })
         })
@@ -88,6 +110,16 @@ class Signup extends Component {
             <div className="uk-container">
                 <div className="uk-card uk-card-default uk-card-body">
                     <h1>Sign In</h1>
+                    {(this.state.alerts !== null)
+                        ? (
+                            <div className="uk-alert-danger" uk-alert="true">
+                                <a className="uk-alert-close" uk-close="true"></a>
+                                <p>{this.state.alerts.response}</p>
+                            </div>
+                        )
+                        : (
+                            <div></div>
+                        )}
                     <form onSubmit={this.formPreventDefault} onChange={this.formChange}>
                         <div className="uk-margin">
                             <div className="uk-inline">
@@ -106,7 +138,6 @@ class Signup extends Component {
                                     className="uk-input uk-form-width-large"
                                     type="password"
                                     id="password"
-                                    autoComplete="list"
                                     placeholder="password"/>
                             </div>
                         </div>
