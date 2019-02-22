@@ -167,18 +167,11 @@ class Navbar extends Component {
                                             <ul className="uk-nav uk-navbar-dropdown-nav">
                                                 {localStorage.getItem("type") === "author"
                                                     ? (
-                                                        <span>
-                                                            <li>
-                                                                <a href="#">
-                                                                    <span className="uk-margin-small-right" uk-icon="icon: file-edit"></span>
-                                                                    Create Post</a>
-                                                            </li>
-                                                            <li>
-                                                                <Link to="/dashboard/analytics">
-                                                                    <span className="uk-margin-small-right" uk-icon="icon: grid"></span>
-                                                                    Dashboard</Link>
-                                                            </li>
-                                                        </span>
+                                                        <li>
+                                                            <Link to="/dashboard/analytics">
+                                                                <span className="uk-margin-small-right" uk-icon="icon: grid"></span>
+                                                                Dashboard</Link>
+                                                        </li>
                                                     )
                                                     : (
                                                         <span></span>

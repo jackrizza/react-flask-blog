@@ -8,7 +8,7 @@ class DashboardNav extends Component {
             <div className=" uk-padding uk-panel" uk-height-viewport="min-height: 100">
                 <ul className="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                     <li className="uk-active">
-                        <Link to="/">Analytics</Link>
+                        <Link to="/dashboard/analytics">Analytics</Link>
                     </li>
                     <li className="uk-parent">
                         <a href="#">User Interaction</a>
@@ -26,7 +26,7 @@ class DashboardNav extends Component {
                         <a href="#">Posts</a>
                         <ul className="uk-nav-sub">
                             <li>
-                                <a href="#">Create a Blog Post</a>
+                                <Link to="/createpost">Create Post</Link>
                             </li>
                             <li>
                                 <a href="#">Edit Blog Posts</a>

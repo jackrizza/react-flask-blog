@@ -15,6 +15,11 @@ class db:
             data.append(document)
         return data
 
+    # analytics
+    def analytics(self, a) -> bool:
+        db.__rethink.table("analytics").insert(a).run(db.__conn)
+        return True
+
     # posts
     def db_get_posts(self) -> []:
         cursor = db.__rethink.table("posts").run(db.__conn)
@@ -35,6 +40,33 @@ class db:
                                                        doc['post_id'].match(post_id)
                                                        ).run(db.__conn)
         return db.__cursor_to_array(cursor)
+
+    def save_post(self, post) -> bool:
+        # check if post exists
+        post_id = post["id"]
+        is_post = False
+        done = False
+        cursor = db.__rethink.table("posts").get(post_id).run(db.__conn)
+
+        if type(cursor) == None :
+            cursor = []
+        else :
+            cursor = db.__cursor_to_array(cursor)
+        if len(cursor) > 1:
+            is_post = True
+        else :
+            is_post = False
+        #if post exists then, update post
+        if is_post :
+            db.__rethink.table("posts").get(post_id).update({"content" : post['content']}).run(db.__conn)
+            done = True
+
+        # if post doesn't exit then, create post
+        else :
+            db.__rethink.table("posts").insert(post).run(db.__conn)
+            done = True
+        return done
+
 
     # auth
     def check_email(self, match) -> bool:

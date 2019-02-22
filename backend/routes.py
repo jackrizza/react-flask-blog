@@ -48,7 +48,7 @@ def get_posts():
         posts = db.db_get_posts()
         return jsonify(posts)
     else:
-        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
+        return jsonify('{"type" : "error", "response" : "wrong api token"}')
 
 @sr.route("/checkemail/<email>", methods=['POST'])
 def email_check(email):
@@ -60,7 +60,7 @@ def email_check(email):
         else:
             return jsonify('{"type" : "sucsess"}')
     else:
-        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
+        return jsonify('{"type" : "error", "response" : "wrong api token"}')
 
 
 @sr.route("/checkusername/<username>", methods=['POST'])
@@ -73,7 +73,7 @@ def username_check(username):
         else:
             return jsonify('{"type" : "sucsess"}')
     else:
-        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
+        return jsonify('{"type" : "error", "response" : "wrong api token"}')
 
 @sr.route("/signup", methods=['POST'])
 def sign_up():
@@ -88,7 +88,7 @@ def sign_up():
            return jsonify('{"type" : "error","response" : "there was a problem creating the user"}')
 
     else:
-        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
+        return jsonify('{"type" : "error", "response" : "wrong api token"}')
 
 
 @sr.route("/salt", methods=['POST'])
@@ -103,7 +103,22 @@ def salt() :
             return jsonify('{"type" : "error","response" : "no user with that username"}')
 
     else:
-        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
+        return jsonify('{"type" : "error", "response" : "wrong api token"}')
+
+@sr.route("/analytics", methods=['POST'])
+def analytics() :
+    client_api_key = request.json['client_api_key']
+    if key.check_key(client_api_key):
+        print(request.json["a"])
+        done = db.analytics(request.json["a"])
+        if done:
+            return jsonify('{"type" : "sucsess", "response" : "all set"}')
+
+        else:
+            return jsonify('{"type" : "error","response" : "error trying to run analytics"}')
+
+    else:
+        return jsonify('{"type" : "error", "response" : "wrong api token"}')
 
 
 @sr.route("/signin", methods=['POST'])
@@ -112,10 +127,24 @@ def sign_in() :
     if key.check_key(client_api_key):
         user = request.json["user"]
         auth_user = auth.sign_in(user)
-        print(auth_user)
         return jsonify(auth_user)
     else:
-        return jsonify('{"type" : "error", "response" : ""wrong api token"}')
+        return jsonify('{"type" : "error", "response" : "wrong api token"}')
+
+
+@sr.route("/new_post", methods=['POST'])
+def new_post() :
+    client_api_key = request.json['client_api_key']
+    if key.check_key(client_api_key):
+        post = request.json["post"]
+        post_saved = db.save_post(post)
+        if post_saved :
+            return jsonify('{"type" : "sucsess", "response" : "Saved Post"}')
+        else :
+            return jsonify('{"type" : "error", "response" : "Did not save post"}')
+    else:
+        return jsonify('{"type" : "error", "response" : "wrong api token"}')
+
 
 
 
