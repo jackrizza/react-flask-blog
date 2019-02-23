@@ -16,9 +16,13 @@ class db:
         return data
 
     # analytics
-    def analytics(self, a) -> bool:
+    def insert_analytics(self, a) -> bool:
         db.__rethink.table("analytics").insert(a).run(db.__conn)
         return True
+
+    def get_analytics(self) -> []:
+        cursor = db.__rethink.table("analytics").run(db.__conn)
+        return db.__cursor_to_array(cursor)
 
     # posts
     def db_get_posts(self) -> []:
@@ -48,10 +52,11 @@ class db:
         done = False
         cursor = db.__rethink.table("posts").get(post_id).run(db.__conn)
 
-        if type(cursor) == None :
+        if cursor is None :
             cursor = []
         else :
             cursor = db.__cursor_to_array(cursor)
+
         if len(cursor) > 1:
             is_post = True
         else :
@@ -66,6 +71,10 @@ class db:
             db.__rethink.table("posts").insert(post).run(db.__conn)
             done = True
         return done
+
+    def new_comment(self, comment) -> bool:
+        db.__rethink.table("comments").insert(comment).run(db.__conn)
+        return True
 
 
     # auth

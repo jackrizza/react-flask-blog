@@ -11,6 +11,7 @@ import getUserIP from "./analytics_fn";
 import CreatePost from "./CreatePost";
 import keys from "./lib/key";
 import env from "./env";
+import auth from "./env";
 import './assets/css/uikit.css';
 
 Date.prototype.addDays = function (days) {
@@ -44,7 +45,7 @@ function analytics() {
         "username": localStorage.getItem("username"),
         "location": ip
       }
-      fetch(`${env.getCurrent().api}analytics`, {
+      fetch(`${env.getCurrent().api}insert_analytics`, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

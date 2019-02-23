@@ -1,18 +1,109 @@
 import keys from "./lib/key";
 import React, {Component} from 'react';
+import moment from 'moment'
 import DashboardNav from './DashboardNav'
+import env from './env'
+import auth from "./auth"
 
 class Visits extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            analytics: [],
             visits: {
-                week: 4,
-                month: 4,
-                year: 4,
-                total: 4
+                week: 0,
+                month: 0,
+                year: 0,
+                total: 0
             }
         }
+    }
+
+    componentWillMount() {
+        this.get_analytics()
+    }
+    get_analytics() {
+        fetch(`${env.getCurrent().api}get_analytics`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({"client_api_key": keys.blog_post_api_key})
+
+        }).then(Response => {
+            Response
+                .json()
+                .then(res => {
+                    res.forEach(element => {
+                        this.setState({
+                            analytics: [
+                                ...this.state.analytics,
+                                element
+                            ]
+                        })
+                    })
+                })
+
+        }).then(_ => {
+            this.setAnalytics()
+        });
+    }
+
+    setAnalytics() {
+        function week(state) {
+            var now = moment();
+            let this_week_length = 0;
+            state
+                .analytics
+                .forEach(element => {
+                    if (moment(element.datetime).isSame(new Date(), 'week')) {
+                        this_week_length++
+                    }
+                })
+
+            return this_week_length
+        }
+        function month(state) {
+            var now = moment();
+            let this_month_length = 0;
+            state
+                .analytics
+                .forEach(element => {
+                    if (moment(element.datetime).isSame(new Date(), 'month')) {
+                        this_month_length++
+                    }
+                })
+
+            return this_month_length
+
+        }
+        function year(state) {
+            var now = moment();
+            let this_year_length = 0;
+            state
+                .analytics
+                .forEach(element => {
+                    if (moment(element.datetime).isSame(new Date(), 'year')) {
+                        this_year_length++
+                    }
+                })
+
+            return this_year_length
+
+        }
+        function total(state) {
+            return state.analytics.length
+        }
+        this.setState({
+            visits: {
+                week: week(this.state),
+                month: month(this.state),
+                year: year(this.state),
+                total: total(this.state)
+            }
+        })
+        console.log(this.state)
     }
 
     render() {
@@ -51,7 +142,15 @@ class Visits extends Component {
 }
 
 class Analytics extends Component {
-
+    componentWillMount() {
+        auth
+            .isSignedIn()
+            .then(user => {
+                if (!user.isSignedIn) {
+                    window.location = "/"
+                }
+            })
+    }
     render() {
         return (
             <div className="uk-grid-divider" uk-grid="true">
@@ -64,7 +163,7 @@ class Analytics extends Component {
                     <div>
                         <div className="uk-card uk-card-default uk-card-body">
                             <h2>Visits</h2>
-                            <Visits />
+                            <Visits/>
                         </div>
                     </div>
                     <div>

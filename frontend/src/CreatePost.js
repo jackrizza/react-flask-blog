@@ -4,9 +4,49 @@ import {Editor, EditorState, RichUtils, getDefaultKeyBinding} from 'draft-js';
 import {stateToMarkdown} from "draft-js-export-markdown";
 import keys from "./lib/key";
 import env from "./env";
+import auth from "./auth";
 
 function uuidv4() {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))
+}
+
+class Alert extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            alert: null
+        }
+    }
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.alert !== this.props.alert) {
+            this.setState({alert: this.props.alert})
+        }
+
+    }
+    render() {
+        if (this.state.alert !== null) {
+            if (this.state.alert.type === "error") {
+                return (
+                    <div className="uk-alert-danger" uk-alert="true">
+                        <a className="uk-alert-close" uk-close="true"></a>
+                        <p>{this.state.alert.response}</p>
+                    </div>
+                )
+            } else {
+                return (
+                    <div className="uk-alert-primary" uk-alert="true">
+                        <a className="uk-alert-close" uk-close="true"></a>
+                        <p>{this.state.alert.response}</p>
+                    </div>
+                )
+            }
+        } else {
+            return (
+                <div></div>
+            )
+        }
+
+    }
 }
 
 class CreatePost extends Component {
@@ -14,12 +54,11 @@ class CreatePost extends Component {
         super(props);
         let uuid = uuidv4()
         this.state = {
-            id : uuid,
+            id: uuid,
             alert: null,
             title: "",
             editorState: EditorState.createEmpty()
         };
-        this._clearAlert = this._clearAlert.bind(this)
         this._onTitleChange = this
             ._onTitleChange
             .bind(this)
@@ -28,8 +67,25 @@ class CreatePost extends Component {
         };
     }
 
-    _clearAlert() {
-        this.setState({alert : null})
+    componentWillMount() {
+        auth.isSignedIn().then( user => {
+            if(!user.isSignedIn) {
+                window.location = "/"
+            }
+        })
+    }
+
+    componentDidMount() {
+        this.clearAlert = this
+            .clearAlert
+            .bind(this)
+        document.addEventListener("click", this.clearAlert)
+    }
+
+    clearAlert(event) {
+        if (event.target.tagName === "svg" && event.target.parentElement.classList.contains("uk-alert-close")) {
+            this.setState({alert: null})
+        }
     }
 
     _onTitleChange(e) {
@@ -64,21 +120,6 @@ class CreatePost extends Component {
                     this.setState({alert: res})
                 })
         });
-        console.log(save)
-    }
-    _onTabKeyClick(e) {
-        console.log("tab clicked")
-        const {editorState} = this.state
-        if (e.keyCode === 9) {
-            const newEditorState = RichUtils.onTab(e, editorState, 6/* maxDepth */)
-            if (newEditorState !== editorState) {
-                this.handleEditorChange(newEditorState)
-            }
-
-            return
-        }
-
-        return getDefaultKeyBinding(e)
     }
 
     _onBoldClick(e) {
@@ -89,31 +130,11 @@ class CreatePost extends Component {
         e.preventDefault()
         this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC'));
     }
-    _onLinkClick(e) {
-        e.preventDefault()
-        // this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC'));
-    }
     render() {
 
         return (
             <div className="uk-container uk-padding">
-                {(this.state.alert !== null)
-                    ? (this.state.alert.type === "error")
-                        ? (
-                            <div className="uk-alert-danger" uk-alert="true">
-                                <a className="uk-alert-close" onClick={this._clearAlert()} uk-close="true"></a>
-                                <p>{this.state.alert.response}</p>
-                            </div>
-                        ) : (
-                            <div className="uk-alert-primary" uk-alert="true">
-                                <a className="uk-alert-close" onClick={this._clearAlert()}  uk-close="true"></a>
-                                <p>{this.state.alert.response}</p>
-                            </div>
-                        )
-                        : (
-                            <div></div>
-                        )}
-                        
+                <Alert alert={this.state.alert}/>
                 <form>
                     <fieldset className="uk-fieldset">
 
@@ -145,12 +166,6 @@ class CreatePost extends Component {
                                         .bind(this)}
                                         className="uk-icon-link uk-icon-button uk-margin-small-right"
                                         uk-icon="italic"></button>
-                                    <button
-                                        onClick={this
-                                        ._onLinkClick
-                                        .bind(this)}
-                                        className="uk-icon-link uk-icon-button uk-margin-small-right"
-                                        uk-icon="link"></button>
                                 </div>
                                 <div className="uk-align-right">
                                     <button
@@ -160,6 +175,21 @@ class CreatePost extends Component {
                                         className="uk-icon-link uk-icon-button uk-margin-small-right"
                                         uk-icon="cloud-upload"></button>
                                 </div>
+                                <div className="uk-align-right">
+                                    <button
+                                        className="uk-icon-link uk-icon-button uk-margin-small-right"
+                                        uk-icon="cloud-download"></button>
+                                    <div uk-drop="mode: click">
+                                        <div className="uk-card uk-card-body uk-card-secondary uk-text-emphasis">
+                                            feature coming soon
+                                            <ul className="uk-list">
+                                                <li>
+                                                    <a href="#">test</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <br/>
@@ -167,9 +197,7 @@ class CreatePost extends Component {
                             editorState={this.state.editorState}
                             onChange={this.onChange}
                             onTab={this.handleKeyBindings}
-                            placeholder="Type Something Amazing...."
-                            autoCapitalize={true}
-                            spellCheck={true}/>
+                            placeholder="Type Something Amazing...."/>
                     </fieldset>
                 </form>
             </div>

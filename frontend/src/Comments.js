@@ -1,6 +1,8 @@
 import keys from "./lib/key";
 import React, {Component} from 'react';
 import dateFormat from 'dateformat';
+import auth from "./auth";
+import env from "./env"
 
 class Com extends Component {
     render() {
@@ -36,12 +38,81 @@ class Com extends Component {
 }
 
 class AddComment extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isUser: false,
+            newComment: ""
+        }
+        this._handleCommentChange = this
+            ._handleCommentChange
+            .bind(this);
+        this._submitForm = this
+            ._submitForm
+            .bind(this);
+    }
+    componentWillMount() {
+        auth
+            .isSignedIn()
+            .then(data => {
+                this.setState({isUser: data.isSignedIn})
+            })
+    }
+    _submitForm(e) {
+        e.preventDefault();
+        let comment = {
+            "comment": this.state.newComment,
+            "date": new Date(),
+            "post_id": window
+                .location
+                .href
+                .split("/")[4],
+            "user": localStorage.getItem("username")
+        }
+        fetch(`${env.getCurrent().api}new_comment`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({"client_api_key": keys.blog_post_api_key, comment: comment})
+
+        }).then(Response => {
+            Response
+                .json()
+                .then(res => {
+                    res = JSON.parse(res)
+                    console.log(res)
+                })
+        });
+    }
+    _handleCommentChange(e) {
+        this.setState({newComment: e.target.value})
+    }
     render() {
-        return (
-            <div>
-                Add a comment
-            </div>
-        )
+        if (this.state.isUser) {
+            return (
+                <div>
+                    <form onSubmit={this._submitForm}>
+                        <fieldset className="uk-fieldset">
+                            <textarea
+                                className="uk-textarea"
+                                rows="5"
+                                placeholder="add a comment"
+                                onChange={this._handleCommentChange}></textarea>
+                            <input
+                                className="uk-button-primary uk-button-large"
+                                type="submit"
+                                value="add comment"/>
+                        </fieldset>
+                    </form>
+                </div>
+            )
+        } else {
+            return <div>You must
+                <a href="/signin">sign in</a>
+                to add a comment</div>
+        }
     }
 }
 
@@ -53,7 +124,11 @@ class Comments extends Component {
         }
     }
 
-    componentDidMount() {
+    getComments() {
+        function custom_sort(a, b) {
+            return new Date(a.date).getTime() - new Date(b.date).getTime();
+        }
+        console.log("getting comments")
         fetch(`http://localhost:5000/comments/${this.props.post}`, {
             headers: {
                 'Accept': 'application/json',
@@ -67,12 +142,21 @@ class Comments extends Component {
                 .json()
                 .then(res => {
                     if (res.length > 0) {
-                        this.setState({comments: res})
+                        this.setState({comments: res.sort(custom_sort)})
                     } else {
                         this.setState({comments: "No Comments Yet"})
                     }
                 });
         });
+    }
+
+    componentDidMount() {
+        let intervalId = setInterval(this.getComments.bind(this), 3000)
+        this.setState({intervalId: intervalId});
+    }
+    componentWillUnmount() {
+        // use intervalId from the state to clear the interval
+        clearInterval(this.state.intervalId);
     }
 
     render() {
@@ -81,6 +165,7 @@ class Comments extends Component {
                 case "object":
                     return (
                         <div className="uk-container uk-margin-large uk-width-1-2">
+                            <AddComment/>
                             <ul
                                 className="uk-comment-list"
                                 style={{
@@ -93,7 +178,6 @@ class Comments extends Component {
                                         return (<Com key={i} comment={element}/>)
                                     })}
                             </ul>
-                            <AddComment/>
                         </div>
                     )
                 default:

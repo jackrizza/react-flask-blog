@@ -16,10 +16,12 @@ class Card extends Component {
                                 <ul className="uk-list uk-list-divider">
                                     <li>
                                         <b>
-                                            <span uk-icon="user"></span> {this.props.post.author}</b>
+                                            <span uk-icon="user"></span>
+                                            {this.props.post.author}</b>
                                     </li>
                                     <li>
-                                        <span uk-icon="clock"></span> {dateFormat(this.props.post.date, "dddd, mmmm dS, yyyy")}</li>
+                                        <span uk-icon="clock"></span>
+                                        {dateFormat(this.props.post.date, "dddd, mmmm dS, yyyy")}</li>
                                 </ul>
                             </div>
                         </div>
@@ -30,7 +32,8 @@ class Card extends Component {
                             .props
                             .post
                             .content
-                            .substring(0, 512) + "..."}/>
+                            .substring(0, 256)
+                            .replace(/<\/?[^>]+(>|$)/g, "") + "..."}/>
                     </div>
                     <div className="uk-card-footer">
                         <Link to={'/post/' + this.props.post.id} className="uk-button uk-button-text">Read more</Link>

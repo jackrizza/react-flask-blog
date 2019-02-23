@@ -47,13 +47,12 @@ class Post extends Component {
         return (
           <div>
             <article className="uk-article uk-container">
-              <div>
+              <div className="uk-padding">
                 <h1 className="uk-article-title">{this.state.posts.title}</h1>
-
-                <p className="uk-article-meta">
-                  <u>Written by {this.state.posts.author}
-                    on {dateFormat(this.state.posts.date, "dddd, mmmm dS, yyyy")}</u>
-                </p>
+                  <ul  className="uk-article-meta uk-list">
+                    <li><span uk-icon="icon : user"></span> {this.state.posts.author}</li>
+                    <li><span uk-icon="icon : clock"></span> {dateFormat(this.state.posts.date, "dddd, mmmm dS, yyyy")}</li>
+                  </ul>
                 <br/>
                 <Markdown markup={this.state.posts.content}/>
               </div>

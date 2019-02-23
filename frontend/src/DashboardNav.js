@@ -1,4 +1,3 @@
-import keys from "./lib/key";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import React, {Component} from 'react';
 
@@ -27,9 +26,6 @@ class DashboardNav extends Component {
                         <ul className="uk-nav-sub">
                             <li>
                                 <Link to="/createpost">Create Post</Link>
-                            </li>
-                            <li>
-                                <a href="#">Edit Blog Posts</a>
                             </li>
                         </ul>
                     </li>
