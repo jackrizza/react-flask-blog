@@ -143,13 +143,7 @@ class Visits extends Component {
 
 class Analytics extends Component {
     componentWillMount() {
-        auth
-            .isSignedIn()
-            .then(user => {
-                if (!user.isSignedIn) {
-                    window.location = "/"
-                }
-            })
+        auth.isSignedIn()
     }
     render() {
         return (

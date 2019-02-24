@@ -15,7 +15,6 @@ class auth:
 
     def sign_in(self, user_data) -> object:
         # Get user by username or email
-        print(user_data)
         final_return = ""
         user = db.get_user(user_data["username_or_email"])
         if len(user) == 1:
@@ -28,7 +27,7 @@ class auth:
                 if new_token:
                     # return token + general user info
                     user = db.get_user_general_info(user_data["username_or_email"])[0]
-                    final_return = '{"type" : "sucsess", "response" : {"type" : "' + user["type"] + '","email" : "' + user["email"] + '","token" : "' + user["token"] + '","username" : "' +user["username"] + '"}}'
+                    final_return = '{"type" : "sucsess", "response" : {"type" : "' + user["type"] + '","email" : "' + user["email"] + '","token" : "' + user["token"] + '","username" : "' + user["username"] + '"}}'
                 else:
                     final_return = '{"type" : "error","response" : "there was an error updating token"}'
             else:

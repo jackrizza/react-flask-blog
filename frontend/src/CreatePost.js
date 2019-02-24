@@ -68,14 +68,11 @@ class CreatePost extends Component {
     }
 
     componentWillMount() {
-        auth.isSignedIn().then( user => {
-            if(!user.isSignedIn) {
-                window.location = "/"
-            }
-        })
+        auth.isSignedIn()
     }
 
     componentDidMount() {
+
         this.clearAlert = this
             .clearAlert
             .bind(this)

@@ -5,7 +5,7 @@ import time
 
 class db:
     # private variables
-    __conn = r.connect("localhost", 28015).repl()
+    __conn = r.connect("192.168.99.100", 32769).repl()
     __rethink = r.db("blog")
 
     # private functions
@@ -98,6 +98,10 @@ class db:
 
     def create_user(self, new_user) -> bool:
         db.__rethink.table("users").insert(new_user).run(db.__conn)
+        db.__rethink.table("users").filter(lambda doc:
+                                           doc['username'].match(new_user["username"])
+                                           ).update({"type" : "basic_user"}).run(db.__conn)
+
         return True
 
     def update_token(self, match) -> bool:

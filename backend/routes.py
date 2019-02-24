@@ -22,6 +22,7 @@ def search(match):
 
 
 @sr.route("/comments/<post_id>", methods=['POST'])
+#TODO : make this a readableStream
 def comments(post_id):
     client_api_key = request.json['client_api_key']
     if key.check_key(client_api_key):
@@ -143,6 +144,7 @@ def check_token() :
     if key.check_key(client_api_key):
         token = request.json["token"]
         auth_user = auth.check_token(token)
+        print(auth_user)
         if auth_user :
             return jsonify('{"type" : "sucsess", "response" : "token is valid"}')
         else :

@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import dateFormat from 'dateformat';
 import auth from "./auth";
 import env from "./env"
+import { callbackify } from "util";
 
 class Com extends Component {
     render() {
@@ -52,11 +53,9 @@ class AddComment extends Component {
             .bind(this);
     }
     componentWillMount() {
-        auth
-            .isSignedIn()
-            .then(data => {
-                this.setState({isUser: data.isSignedIn})
-            })
+        auth.isSignedIn( data => {
+            this.setState({isUser : data})
+        });
     }
     _submitForm(e) {
         e.preventDefault();
@@ -109,9 +108,7 @@ class AddComment extends Component {
                 </div>
             )
         } else {
-            return <div>You must
-                <a href="/signin">sign in</a>
-                to add a comment</div>
+            return <div>You must <a href="/signin">sign in</a> to add a comment</div>
         }
     }
 }
